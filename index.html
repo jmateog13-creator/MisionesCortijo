@@ -626,31 +626,16 @@
             e.target.disabled = false; e.target.innerHTML = "Forzar Horas (CSV)"; openAdmin(); 
         };
 
-        async function injectDummyData(teamName) {
-            const hasDummy = await localforage.getItem('dummy_injected');
-            if (!hasDummy) {
-                // Generamos fotos en blanco (canvas)
-                const c = document.createElement('canvas'); c.width = 800; c.height = 600; const ctx = c.getContext('2d');
-                ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,800,600);
-                
-                // Texto Foto 1 (Misión Falsa 98)
-                ctx.fillStyle = '#ff2a2a'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('FOTO BLANCA TEST 1', 400, 270);
-                ctx.fillStyle = '#000000'; ctx.fillRect(0, 540, 800, 60); ctx.fillStyle = '#ffffff'; ctx.font = `bold 24px sans-serif`; ctx.textBaseline = 'middle';
-                ctx.textAlign = 'left'; ctx.fillText(`👤 ${teamName}`, 24, 570); ctx.textAlign = 'right'; ctx.fillText(`📸 Misión 98 (Test)`, 776, 570);
-                await localforage.setItem('mission_98', c.toDataURL('image/jpeg', 0.8));
-                
-                // Texto Foto 2 (Misión Falsa 99)
-                ctx.fillStyle = '#f0f2f5'; ctx.fillRect(0,0,800,540);
-                ctx.fillStyle = '#3366ff'; ctx.font = 'bold 40px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('FOTO BLANCA TEST 2', 400, 270);
-                ctx.fillStyle = '#ffffff'; ctx.textAlign = 'right'; ctx.fillText(`📸 Misión 99 (Test)`, 776, 570);
-                await localforage.setItem('mission_99', c.toDataURL('image/jpeg', 0.8));
-                
-                await localforage.setItem('dummy_injected', true);
-            }
-        }
+
 
         async function boot() {
             let teamName = await localforage.getItem('arjup_team_name');
+            
+            // Limpieza proactiva de antiguas fotos dummy blancas
+            await localforage.removeItem('mission_98');
+            await localforage.removeItem('mission_99');
+            await localforage.removeItem('dummy_injected');
+
             if (!teamName) {
                 const overlay = document.getElementById('welcome-overlay');
                 overlay.style.display = 'flex';
@@ -660,7 +645,6 @@
                         await localforage.setItem('arjup_team_name', inputVal);
                         document.getElementById('user-profile-name').innerText = inputVal;
                         document.getElementById('user-profile-corner').style.display = 'flex';
-                        await injectDummyData(inputVal); 
                         overlay.style.display = 'none';
                         bootRoutine();
                     } else { alert("Si us plau, escriu un nom!"); }
@@ -668,7 +652,6 @@
             } else {
                 document.getElementById('user-profile-name').innerText = teamName;
                 document.getElementById('user-profile-corner').style.display = 'flex';
-                await injectDummyData(teamName);
                 bootRoutine();
             }
         }
