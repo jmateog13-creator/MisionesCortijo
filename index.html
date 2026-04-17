@@ -329,8 +329,20 @@
         async function fetchMissions() {
             try {
                 if (!SHEET_CSV_URL) throw new Error("Sin CSV");
-                const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now(), { cache: "no-store" });
-                if (!res.ok) throw new Error("Fetch HTTP " + res.status);
+                
+                let res;
+                try {
+                    // Intento 1: Directo (puede fallar en Safari Móvil por ITP cross-site tracking en los redirects de Google)
+                    res = await fetch(SHEET_CSV_URL + '&t=' + Date.now(), { cache: "no-store" });
+                    if (!res.ok) throw new Error("Fetch HTTP " + res.status);
+                } catch(e) {
+                    // Intento 2: Bypass universal con Proxy para evitar el bloqueo del móvil
+                    console.log("Bypass de seguridad activado...");
+                    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(SHEET_CSV_URL + '&t=' + Date.now());
+                    res = await fetch(proxyUrl, { cache: "no-store" });
+                    if (!res.ok) throw new Error("Proxy HTTP " + res.status);
+                }
+                
                 const text = await res.text();
                 const lines = text.trim().split('\n');
                 const data = [];
