@@ -63,6 +63,7 @@
             position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); width: 45px; height: 45px; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 101; transition: transform 0.2s;
         }
         .btn-admin-corner:active { transform: scale(0.9); }
+        .user-profile-corner { position: absolute; top: 1.5rem; left: 1.5rem; font-size: 0.9rem; font-weight: 800; color: var(--text-dark); background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 0.5rem 1rem; border-radius: 100px; box-shadow: var(--shadow-sm); border: 1px solid var(--glass-border); z-index: 100; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: none; align-items: center; gap: 0.4rem;}
 
         main { padding: 1rem 1.5rem 4rem; max-width: 500px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; gap: 2rem; position: relative; z-index: 10; }
 
@@ -163,18 +164,20 @@
 
     <header>
         <button class="btn-admin-corner" id="btn-admin-top">⚙️</button>
+        <div class="user-profile-corner" id="user-profile-corner">👤 <span id="user-profile-name">Perfil</span></div>
         <h1 id="title-trigger">Penya l'Arjup</h1>
-        <div class="subtitle">Gincana Survivor</div>
-        <div id="big-clock" class="neon-text-red">--:--:--</div>
+        <div class="subtitle">Gimcana Survivor</div>
+        <div style="font-size:0.9rem; font-weight:800; color:var(--text-muted); margin-top:1.5rem; letter-spacing:2px; text-transform:uppercase;">Hora Actual</div>
+        <div id="big-clock" style="font-size:3.8rem; font-weight:900; color:var(--text-dark); line-height:1; font-variant-numeric: tabular-nums; letter-spacing:-2px; margin-top:0.2rem;">--:--:--</div>
     </header>
 
     <main>
         <div class="btn-test-container" style="justify-content: space-between;">
             <button class="btn-mision-test" onclick="openMission('0')">
-                <span class="emoji">🦆</span> Misión 0
+                <span class="emoji">🦆</span> Missió 0
             </button>
             <button class="btn-mision-test" onclick="openUserGallery()">
-                <span class="emoji">🖼️</span> Mi Álbum
+                <span class="emoji">🖼️</span> El Meu Àlbum
             </button>
         </div>
 
@@ -182,10 +185,10 @@
         <div class="premium-card-wrapper" id="premium-wrapper" style="display:none;">
             <div class="premium-card" id="main-premium-card" onclick="openCurrentMission()">
                 <div class="premium-duck">🦆</div>
-                <div class="pm-subtitle" id="pm-subtitle">Siguiente Misión</div>
-                <div class="pm-title" id="pm-title">Misión X</div>
-                <div class="pm-time" id="pm-time" style="font-size:1.1rem; font-weight:800; color:var(--text-muted); margin-top:-0.5rem; letter-spacing:1px; text-transform:uppercase;">Apertura: 16:00</div>
-                <div class="pm-status" id="pm-status">⏳ Cargando...</div>
+                <div class="pm-subtitle" id="pm-subtitle">Següent Missió</div>
+                <div class="pm-title" id="pm-title">Missió X</div>
+                <div class="pm-time" id="pm-time" style="font-size:1.1rem; font-weight:800; color:var(--text-muted); margin-top:-0.5rem; letter-spacing:1px; text-transform:uppercase;">Obertura: 16:00</div>
+                <div class="pm-status" id="pm-status">⏳ Carregant...</div>
             </div>
         </div>
         
@@ -193,43 +196,60 @@
         <div class="premium-card-wrapper" id="victory-wrapper" style="display:none;">
             <div class="premium-card victory-card">
                 <div class="premium-duck victory-duck">🏆</div>
-                <div class="pm-title" style="color:var(--success);">¡Gincana<br>Completada!</div>
-                <div class="pm-subtitle" style="font-size:1.1rem; color:var(--text-dark);">¡Sois unos supervivientes!</div>
+                <div class="pm-title" style="color:var(--success);">¡Gimcana<br>Completada!</div>
+                <div class="pm-subtitle" style="font-size:1.1rem; color:var(--text-dark);">Heu sobreviscut!</div>
             </div>
         </div>
     </main>
 
-    <!-- WELCOME OVERLAY -->
-    <div id="welcome-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9000; background:rgba(233,236,239,0.9); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center;">
-        <div style="font-size:4rem; margin-bottom:1rem;">🦆</div>
-        <h2 style="font-size:2.2rem; margin-bottom:1rem; color:var(--text-dark); line-height:1.1; letter-spacing:-1px;">¡Bienvenido a la<br>Gincana!</h2>
-        <p style="color:var(--text-muted); margin-bottom:2rem; font-size:1.1rem; font-weight:600;">Introduce tu nombre o el de tu equipo para firmar tus capturas.</p>
-        <input type="text" id="team-name-input" placeholder="Nombre de Equipo" style="padding:1.2rem; font-size:1.3rem; font-weight:800; border-radius:16px; border:2px solid var(--glass-border); text-align:center; width:100%; max-width:320px; margin-bottom:2rem; outline:none; box-shadow:var(--shadow-sm); background:rgba(255,255,255,0.7);">
-        <button class="btn-enorme" id="btn-save-name" style="max-width:320px; box-shadow:0 10px 30px rgba(255, 42, 42, 0.4);">COMENZAR AVENTURA</button>
+    <!-- WELCOME OVERLAY (LANDING PAGE) -->
+    <div id="welcome-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9000; background:rgba(240,242,245,1); flex-direction:column; align-items:center; justify-content:center; padding:1.2rem; text-align:center;">
+        
+        <img src="logos/logoarjup.png" style="width:90px; height:90px; border-radius:50%; margin-bottom:0.8rem; box-shadow:0 8px 25px rgba(255,42,42,0.3); object-fit:cover;">
+
+        <h1 style="font-size:2.5rem; font-weight:900; color:var(--accent-red); line-height:1; letter-spacing:-1px; margin-bottom: 0.2rem; text-transform: uppercase;">Gimcana<br>Survivor</h1>
+        <div style="font-size:1rem; font-weight:900; color:var(--text-dark); margin-bottom: 1.2rem; letter-spacing: 2px;">LA NIT MÉS LLARGA</div>
+
+        <div style="background:#ffffff; border-radius:16px; padding:1.2rem; border:1px solid var(--glass-border); box-shadow:var(--shadow-sm); text-align:left; width:100%; max-width:400px; margin-bottom: 1.2rem;">
+            <h3 style="font-size:1rem; font-weight:900; margin-bottom:0.8rem; color:var(--text-dark); text-align:center;">📜 REGLES DEL JOC</h3>
+            <ul style="font-size:0.85rem; color:var(--text-muted); padding-left:1.2rem; line-height:1.4; font-weight:600; display:flex; flex-direction:column; gap:0.6rem; margin:0;">
+                <li>Tindràs un màxim de <strong>20 minuts</strong> per complir la missió secreta que s'acaba de filtrar.</li>
+                <li>Missió que no compleixis a l'hora, missió que quedarà <strong>caducada 💀 per sempre</strong>.</li>
+                <li>🎁 <strong>GRAN PREMI:</strong> Si aconsegueixes fer les 8 missions principals perfectament, podràs desbloquejar un <strong>Gran Premi Final!</strong></li>
+                <li><strong><span style="color:var(--accent-red)">IMPORTANT:</span></strong> A l'entrar, ves directament a <strong style="color:var(--text-dark);">Missió 0 (Test)</strong> i fes-te un selfi per comprovar els permisos de càmera.</li>
+            </ul>
+        </div>
+
+        <p style="color:var(--text-muted); margin-bottom:0.6rem; font-size:0.9rem; font-weight:700;">Identifica't per firmar les teves evidències:</p>
+        <input type="text" id="team-name-input" placeholder="El teu Nom" style="padding:1rem; font-size:1.1rem; font-weight:800; border-radius:16px; border:2px solid var(--glass-border); text-align:center; width:100%; max-width:400px; margin-bottom:1rem; outline:none; box-shadow:inset 0 2px 5px rgba(0,0,0,0.05); background:#f9fafb; color:var(--text-dark);">
+        
+        <button class="btn-enorme" id="btn-save-name" style="max-width:400px; padding:1.2rem; font-size:1.2rem; box-shadow:0 8px 25px rgba(255, 42, 42, 0.4);">
+            ENTRAR A L'ARENA
+        </button>
     </div>
 
     <!-- MODAL MISIÓN -->
     <div id="mission-modal">
         <div class="modal-nav">
-            <button class="btn-back" id="btn-cerrar-mision">← Volver</button>
+            <button class="btn-back" id="btn-cerrar-mision">← Tornar</button>
         </div>
         
         <div class="m-detail-card" id="m-detail-card">
-            <div class="m-id-label" id="md-label">Misión X</div>
+            <div class="m-id-label" id="md-label">Missió X</div>
             
-            <h2 class="m-title" id="md-title">Título de la Misión</h2>
-            <div class="spoiler-alert" id="md-spoiler-alert" style="display:none;">¡Secreta hasta que empiece!</div>
+            <h2 class="m-title" id="md-title">Títol de la Missió</h2>
+            <div class="spoiler-alert" id="md-spoiler-alert" style="display:none;">¡Secreta fins que comenci!</div>
             
-            <div class="m-time-box" id="md-time">Empieza a las 16:00</div>
+            <div class="m-time-box" id="md-time">Comença a les 16:00</div>
             
             <!-- Contenedor dinámico (Temporizador Gigante o Mensaje) -->
             <div id="md-status-container" style="width:100%; margin-top:0.5rem;">
-                <div class="m-status-espera">Cargando...</div>
+                <div class="m-status-espera">Carregant...</div>
             </div>
             
             <div class="btn-wrapper" id="md-btn-wrapper" style="display:none;">
                 <button class="btn-enorme">
-                    <span style="font-size:1.8rem">📸</span> TOMAR FOTO
+                    <span style="font-size:1.8rem">📸</span> FER FOTO
                 </button>
                 <input type="file" accept="image/*" capture="environment" class="camera-input" id="md-camera-input">
             </div>
@@ -241,18 +261,23 @@
     <!-- ADMIN/GALLERY MODAL -->
     <div id="admin-modal">
         <div class="modal-header">
-            <h2 id="admin-modal-title">Panel Admin</h2>
+            <h2 id="admin-modal-title">Panell Admin</h2>
             <button class="close-btn" id="close-admin">X</button>
         </div>
-        <div class="info-box" id="admin-box-info">👉 Admins: Pulsad una foto para ampliar.<br>📷 Jugadores: Mantened presionada la imagen ampliada para guardarla en carrete.</div>
+        <div class="info-box" id="admin-box-info">👉 Admins: Polseu una foto per ampliar-la.<br>📷 Jugadors: Mantingueu premuda la imatge ampliada per guardar-la al carret digital.</div>
         
         <div class="gallery-grid" id="gallery-container"></div>
         
+        <div id="admin-mission-list-container" style="display:none; margin-top:1rem; margin-bottom:2rem;">
+            <h3 style="color:var(--text-dark); margin-bottom:1rem; font-size:1.2rem; font-weight:900;">Llista de Missions</h3>
+            <ul id="admin-mission-list" style="background:var(--glass-bg); border-radius:16px; padding:1.2rem; text-align:left; list-style:none; margin:0; display:flex; flex-direction:column; gap:0.8rem; font-size:0.9rem; color:var(--text-dark); box-shadow:var(--shadow-sm); border:1px solid var(--glass-border);"></ul>
+        </div>
+
         <div class="admin-controls" id="admin-box-controls">
             <a href="#" target="_blank" class="btn-sheets" id="btn-open-sheets">
-                <span style="font-size:1.5rem">📊</span> Abrir Google Sheets
+                <span style="font-size:1.5rem">📊</span> Obrir Google Sheets
             </a>
-            <button class="btn-outline" id="force-update">Forzar Horas (CSV)</button>
+            <button class="btn-outline" id="force-update">Forçar Hores (CSV)</button>
         </div>
     </div>
 
@@ -263,22 +288,20 @@
 
     <script>
         // CONFIG - Añade tu enlace del documento final abierto (para editar) y el CSV 
-        const SHEET_CSV_URL = ""; 
+        const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLUTj5WmFAPY2xKTP4pJ-XF1tCk9347X0a1Rs4yC5UOQkE-UfTzPe7AURQoZ5npF_husqaHwZ9PNrc/pub?output=csv"; 
         const SHEET_EDIT_URL = "https://docs.google.com/spreadsheets/"; 
 
         const FALLBACK_MISSIONS = [
-            { id: "1",  titulo: "Misión 1: Foto con el más viejo de la fiesta", horaInicio: "16:00", horaFin: "17:00" },
-            { id: "2",  titulo: "Misión 2: Todo el grupo saltando a la vez", horaInicio: "17:30", horaFin: "18:30" },
-            { id: "3",  titulo: "Misión 3: Intercambio de camisetas", horaInicio: "19:00", horaFin: "20:00" },
-            { id: "4",  titulo: "Misión 4: Una pirámide humana épica", horaInicio: "20:30", horaFin: "21:30" },
-            { id: "5",  titulo: "Misión 5: Simulando un grupo de Rock", horaInicio: "22:00", horaFin: "23:00" },
-            { id: "6",  titulo: "Misión 6: Cenando con estilo", horaInicio: "23:00", horaFin: "23:59" },
-            { id: "7",  titulo: "Misión 7: Brindis por l'Arjup", horaInicio: "00:00", horaFin: "01:00" }, 
-            { id: "8",  titulo: "Misión 8: Beso en la calva", horaInicio: "01:30", horaFin: "02:30" },   
-            { id: "9",  titulo: "Misión 9: Todos dentro del baño", horaInicio: "03:00", horaFin: "03:45" },
-            { id: "10", titulo: "Misión 10: Bailando con un desconocido", horaInicio: "04:00", horaFin: "04:45" },
-            { id: "11", titulo: "Misión 11: Dominando la barra", horaInicio: "05:00", horaFin: "05:45" },
-            { id: "12", titulo: "Misión 12: Sobrevivientes del amanecer", horaInicio: "06:00", horaFin: "07:00" }
+            { id: "1",  titulo: "Misión 1: Foto con el más viejo de la fiesta", horaInicio: "16:00", horaFin: "16:20" },
+            { id: "2",  titulo: "Misión 2: Todo el grupo saltando a la vez", horaInicio: "17:00", horaFin: "17:20" },
+            { id: "3",  titulo: "Misión 3: Intercambio de camisetas", horaInicio: "18:30", horaFin: "18:50" },
+            { id: "4",  titulo: "Misión 4: Una pirámide humana épica", horaInicio: "20:00", horaFin: "20:20" },
+            { id: "5",  titulo: "Misión 5: Simulando un grupo de Rock", horaInicio: "21:30", horaFin: "21:50" },
+            { id: "6",  titulo: "Misión 6: Cenando con estilo", horaInicio: "23:00", horaFin: "23:20" },
+            { id: "7",  titulo: "Misión 7: Brindis por l'Arjup", horaInicio: "00:00", horaFin: "00:20" }, 
+            { id: "8",  titulo: "Misión 8: Beso en la calva", horaInicio: "01:00", horaFin: "01:20" },   
+            { id: "9",  titulo: "Misión BONUS 1", horaInicio: "02:30", horaFin: "02:50" },
+            { id: "10", titulo: "Misión BONUS 2 (Rumbo al amanecer)", horaInicio: "04:30", horaFin: "04:50" }
         ];
 
         let missions = [];
@@ -291,6 +314,18 @@
         document.getElementById('btn-open-sheets').href = SHEET_EDIT_URL;
 
         // FETCH
+        function parseCSVLine(str) {
+            const arr = []; let quote = false; let val = '';
+            for (let c=0; c<str.length; c++) {
+                let ch = str[c];
+                if (quote && ch === '"' && str[c+1] === '"') { val += '"'; c++; }
+                else if (ch === '"') { quote = !quote; }
+                else if (ch === ',' && !quote) { arr.push(val.trim().replace(/^"|"$/g, '')); val = ''; }
+                else { val += ch; }
+            }
+            arr.push(val.trim().replace(/^"|"$/g, '')); return arr;
+        }
+
         async function fetchMissions() {
             try {
                 if (!SHEET_CSV_URL) throw new Error("Sin CSV");
@@ -301,7 +336,7 @@
                 const data = [];
                 for(let i=0; i<lines.length; i++) {
                     if(i===0 && lines[i].toLowerCase().includes('titulo')) continue;
-                    const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                    const cols = parseCSVLine(lines[i]);
                     if(cols.length >= 4) data.push({ id: cols[0], titulo: cols[1], horaInicio: cols[2], horaFin: cols[3] });
                 }
                 return data.length > 0 ? data : [...FALLBACK_MISSIONS];
@@ -338,6 +373,16 @@
             return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
+        function getDuckLogoForMission(id) {
+            const map = {
+                "1": "patoalavidadj.jpg", "2": "patoalavidahonorable.jpg", "3": "patalavidapunky.jpg", "4": "revelacionhonorable.jpg",
+                "5": "dj3.jpg",           "6": "dj4.jpg",                  "7": "ball2.jpg",           "8": "ball3.jpg",
+                "9": "ball4.jpg",         "10": "ball5.jpg"
+            };
+            if (map[id]) return `<img src="logos/${map[id]}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+            return `🦆`; 
+        }
+
         // MOTOR
         async function updateTick() {
             const now = new Date();
@@ -371,9 +416,22 @@
                 document.getElementById('premium-wrapper').style.display = 'flex';
                 
                 pointerTargetId = currentCandidate.id;
-                document.getElementById('pm-subtitle').innerText = currentCandidate._state === "activa" ? "MISIÓN ACTUAL" : "SIGUIENTE MISIÓN";
-                document.getElementById('pm-title').innerText = `Misión ${currentCandidate.id}`;
-                document.getElementById('pm-time').innerText = `Apertura: ${currentCandidate.horaInicio}`;
+                
+                document.querySelector('#main-premium-card .premium-duck').innerHTML = getDuckLogoForMission(currentCandidate.id);
+
+                if (currentCandidate.id === "9") {
+                    document.getElementById('pm-subtitle').innerText = "🔥 REPTE PRINCIPAL SUPERAT! 🔥";
+                    document.getElementById('pm-title').innerText = `Missió Bonus 1`;
+                    document.getElementById('pm-time').innerHTML = `<span style="color:var(--accent-red)">Ensenyeu l'àlbum a la directiva! 📸<br>I si encara en voleu més... | Obertura: ${currentCandidate.horaInicio}</span>`;
+                } else if (currentCandidate.id === "10") {
+                    document.getElementById('pm-subtitle').innerText = "🎁 MISSIÓ BONUS FINAL";
+                    document.getElementById('pm-title').innerText = `Rumb a l'Alba`;
+                    document.getElementById('pm-time').innerText = `Obertura: ${currentCandidate.horaInicio}`;
+                } else {
+                    document.getElementById('pm-subtitle').innerText = currentCandidate._state === "activa" ? "MISSIÓ ACTUAL" : "SEGÜENT MISSIÓ";
+                    document.getElementById('pm-title').innerText = `Missió ${currentCandidate.id}`;
+                    document.getElementById('pm-time').innerText = `Obertura: ${currentCandidate.horaInicio}`;
+                }
                 
                 const pmStatus = document.getElementById('pm-status');
                 if (currentCandidate._state === "activa") {
@@ -401,10 +459,9 @@
             const btnWrap = document.getElementById('md-btn-wrapper');
             const photoPrev = document.getElementById('md-photo-preview');
 
-            lblId.innerText = m.id === "0" ? "MODO PRUEBA" : `MISIÓN ${m.id}`;
+            lblId.innerText = m.id === "0" ? "MODE PROVA" : `MISSIÓ ${m.id}`;
             
-            // Si está en espera, mostramos SÓLO cuando EMPieza
-            lblTime.innerText = m._siempreActiva ? "Siempre Activa" : (state === "espera" ? `Empieza a las ${m.horaInicio}` : `${m.horaInicio} - ${m.horaFin}`);
+            lblTime.innerText = m._siempreActiva ? "Sempre Activa" : (state === "espera" ? `Comença a les ${m.horaInicio}` : `${m.horaInicio} - ${m.horaFin}`);
             lblTime.style.display = (state === "completada" || state === "caducada") ? "none" : "inline-block";
             
             lblTitle.className = "m-title";
@@ -417,27 +474,26 @@
                 const hh = Math.floor(diff / 3600000); const mm = Math.floor((diff % 3600000) / 60000); const ss = Math.floor((diff % 60000) / 1000);
                 lblTitle.innerText = "██████████"; lblTitle.classList.add('m-censored');
                 spoilerAlt.style.display = "block";
-                statusBox.innerHTML = `<div class="m-status-espera">⏳ Quedan ${hh > 0 ? hh + 'h ' : ''}${mm}m ${ss}s</div>`;
+                statusBox.innerHTML = `<div class="m-status-espera">⏳ Queden ${hh > 0 ? hh + 'h ' : ''}${mm}m ${ss}s</div>`;
             } 
             else if (state === "activa") {
                 lblTitle.innerText = m.titulo; 
-                lblTime.style.display = "none"; // Ocultamos el tiempo estático, solo se ve el neon 
-                // TEMPORIZADOR NEON GIGANTE INVERSO
+                lblTime.style.display = "none"; 
                 const diffStr = formatRemaining(m._end - now);
                 statusBox.innerHTML = `
-                    <div style="font-size:0.95rem; font-weight:800; color:#ff2a2a; margin-top:1rem; letter-spacing:1px;">¡TIEMPO RESTANTE!</div>
+                    <div style="font-size:0.95rem; font-weight:800; color:#ff2a2a; margin-top:1rem; letter-spacing:1px;">TEMPS RESTANT!</div>
                     <div class="m-countdown-active neon-text-red">${diffStr}</div>
                 `;
                 btnWrap.style.display = "block"; document.getElementById('md-camera-input').setAttribute('data-id', m.id);
             } 
             else if (state === "completada") {
                 lblTitle.innerText = m.titulo; 
-                statusBox.innerHTML = `<div class="m-status-completada">✨ ¡MISIÓN CUMPLIDA! ✨</div>`;
+                statusBox.innerHTML = `<div class="m-status-completada">✨ MISSIÓ COMPLERTA! ✨</div>`;
                 localforage.getItem(`mission_${m.id}`).then(b64 => { if(b64){photoPrev.src = b64; photoPrev.style.display = "block";} });
             } 
             else if (state === "caducada") {
                 lblTitle.innerText = m.titulo; 
-                statusBox.innerHTML = `<div class="m-status-caducada">💀 Vas tarde, crack</div>`;
+                statusBox.innerHTML = `<div class="m-status-caducada">💀 Vas tard, crack</div>`;
             }
         }
 
@@ -457,7 +513,12 @@
                 const img = new Image();
                 img.onload = async () => {
                     const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-                    const w = img.width; const h = img.height; const barH = Math.max(60, h * 0.08);
+                    
+                    // ESCALADO PREVENTIVO CONTRA CRASHES DE MEMORIA (Max 1200px)
+                    let w = img.width; let h = img.height; const MAX_WIDTH = 1200;
+                    if (w > MAX_WIDTH) { h = Math.floor(h * (MAX_WIDTH / w)); w = MAX_WIDTH; }
+                    
+                    const barH = Math.max(50, h * 0.08); // Franja ajustada a nueva escala
                     canvas.width = w; canvas.height = h + barH;
                     ctx.drawImage(img, 0, 0, w, h);
                     
@@ -511,6 +572,7 @@
             document.getElementById('admin-modal-title').innerText = "Mi Álbum Gincana";
             document.getElementById('admin-box-controls').style.display = "none";
             document.getElementById('admin-box-info').style.display = "none";
+            document.getElementById('admin-mission-list-container').style.display = "none";
             document.getElementById('admin-modal').classList.add('active');
             openGalleryUI();
         }
@@ -519,6 +581,19 @@
             document.getElementById('admin-modal-title').innerText = "Panel Admin";
             document.getElementById('admin-box-controls').style.display = "flex";
             document.getElementById('admin-box-info').style.display = "block";
+            
+            const mListContainer = document.getElementById('admin-mission-list-container');
+            const mList = document.getElementById('admin-mission-list');
+            mListContainer.style.display = "block"; mList.innerHTML = '';
+            missions.forEach(m => {
+                if(m.id !== "0") {
+                    const li = document.createElement('li'); li.style.borderBottom = "1px solid rgba(0,0,0,0.05)"; li.style.paddingBottom = "0.5rem";
+                    let stIcon = "⏳"; if(m._state === "activa") stIcon = "🔴"; else if(m._state === "completada") stIcon = "✨"; else if(m._state === "caducada") stIcon = "💀";
+                    li.innerHTML = `<strong>M${m.id}:</strong> ${m.titulo}<br><span style="color:var(--text-muted);font-size:0.8rem;">${m.horaInicio} - ${m.horaFin} | [${stIcon}]</span>`;
+                    mList.appendChild(li);
+                }
+            });
+
             document.getElementById('admin-modal').classList.add('active');
             openGalleryUI();
         }
@@ -564,24 +639,40 @@
                     const inputVal = document.getElementById('team-name-input').value.trim();
                     if(inputVal.length > 0) {
                         await localforage.setItem('arjup_team_name', inputVal);
+                        document.getElementById('user-profile-name').innerText = inputVal;
+                        document.getElementById('user-profile-corner').style.display = 'flex';
                         await injectDummyData(inputVal); 
                         overlay.style.display = 'none';
                         bootRoutine();
-                    } else { alert("¡Por favor, escribe un nombre!"); }
+                    } else { alert("Si us plau, escriu un nom!"); }
                 };
             } else {
+                document.getElementById('user-profile-name').innerText = teamName;
+                document.getElementById('user-profile-corner').style.display = 'flex';
                 await injectDummyData(teamName);
                 bootRoutine();
             }
         }
         
+        async function backgroundSync() {
+            try {
+                let mRaw = await fetchMissions();
+                mRaw.unshift({ id: "0", titulo: "Missió 0: PROVA DEL SISTEMA (Selfi)", horaInicio: "Sempre", horaFin: "Oberta", _siempreActiva: true });
+                missions = calcLogicalDates(mRaw);
+                updateTick();
+            } catch(e) {}
+        }
+
         async function bootRoutine() {
             let mRaw = await fetchMissions();
-            mRaw.unshift({ id: "0", titulo: "Misión 0: PRUEBA DEL SISTEMA (Selfi)", horaInicio: "Siempre", horaFin: "Abierta", _siempreActiva: true });
+            mRaw.unshift({ id: "0", titulo: "Missió 0: PROVA DEL SISTEMA (Selfi)", horaInicio: "Sempre", horaFin: "Oberta", _siempreActiva: true });
             missions = calcLogicalDates(mRaw);
             updateTick();
             if(engineInterval) clearInterval(engineInterval);
             engineInterval = setInterval(updateTick, 1000);
+            
+            // Sincronización silenciosa en vivo cada 60 segundos
+            setInterval(backgroundSync, 60000);
         }
         window.onload = boot;
     </script>
