@@ -292,16 +292,16 @@
         const SHEET_EDIT_URL = "https://docs.google.com/spreadsheets/"; 
 
         const FALLBACK_MISSIONS = [
-            { id: "1",  titulo: "Misión 1: Foto con el más viejo de la fiesta", horaInicio: "16:00", horaFin: "16:20" },
-            { id: "2",  titulo: "Misión 2: Todo el grupo saltando a la vez", horaInicio: "17:00", horaFin: "17:20" },
-            { id: "3",  titulo: "Misión 3: Intercambio de camisetas", horaInicio: "18:30", horaFin: "18:50" },
-            { id: "4",  titulo: "Misión 4: Una pirámide humana épica", horaInicio: "20:00", horaFin: "20:20" },
-            { id: "5",  titulo: "Misión 5: Simulando un grupo de Rock", horaInicio: "21:30", horaFin: "21:50" },
-            { id: "6",  titulo: "Misión 6: Cenando con estilo", horaInicio: "23:00", horaFin: "23:20" },
-            { id: "7",  titulo: "Misión 7: Brindis por l'Arjup", horaInicio: "00:00", horaFin: "00:20" }, 
-            { id: "8",  titulo: "Misión 8: Beso en la calva", horaInicio: "01:00", horaFin: "01:20" },   
-            { id: "9",  titulo: "Misión BONUS 1", horaInicio: "02:30", horaFin: "02:50" },
-            { id: "10", titulo: "Misión BONUS 2 (Rumbo al amanecer)", horaInicio: "04:30", horaFin: "04:50" }
+            { id: "1",  titulo: "Missió 1: Foto amb el més gran de la festa", horaInicio: "16:00", horaFin: "16:20" },
+            { id: "2",  titulo: "Missió 2: Tot el grup saltant alhora", horaInicio: "17:00", horaFin: "17:20" },
+            { id: "3",  titulo: "Missió 3: Intercanvi de samarretes", horaInicio: "18:30", horaFin: "18:50" },
+            { id: "4",  titulo: "Missió 4: Una piràmide humana èpica", horaInicio: "20:00", horaFin: "20:20" },
+            { id: "5",  titulo: "Missió 5: Simulant un grup de Rock", horaInicio: "21:30", horaFin: "21:50" },
+            { id: "6",  titulo: "Missió 6: Sopant amb estil", horaInicio: "23:00", horaFin: "23:20" },
+            { id: "7",  titulo: "Missió 7: Brindis per l'Arjup", horaInicio: "00:00", horaFin: "00:20" }, 
+            { id: "8",  titulo: "Missió 8: Petó a la calba", horaInicio: "01:00", horaFin: "01:20" },   
+            { id: "9",  titulo: "Missió BONUS 1", horaInicio: "02:30", horaFin: "02:50" },
+            { id: "10", titulo: "Missió BONUS 2 (Rumb a l'Alba)", horaInicio: "04:30", horaFin: "04:50" }
         ];
 
         let missions = [];
@@ -329,7 +329,7 @@
         async function fetchMissions() {
             try {
                 if (!SHEET_CSV_URL) throw new Error("Sin CSV");
-                const res = await fetch(SHEET_CSV_URL + '?t=' + Date.now());
+                const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now(), { cache: "no-store" });
                 if (!res.ok) throw new Error("Fetch HTTP " + res.status);
                 const text = await res.text();
                 const lines = text.trim().split('\n');
@@ -429,7 +429,14 @@
                     document.getElementById('pm-time').innerText = `Obertura: ${currentCandidate.horaInicio}`;
                 } else {
                     document.getElementById('pm-subtitle').innerText = currentCandidate._state === "activa" ? "MISSIÓ ACTUAL" : "SEGÜENT MISSIÓ";
-                    document.getElementById('pm-title').innerText = `Missió ${currentCandidate.id}`;
+                    // Si está activa revelamos el título y ajustamos texto, si no, mostramos solo Missió X
+                    if(currentCandidate._state === "activa") {
+                        document.getElementById('pm-title').innerText = currentCandidate.titulo;
+                        document.getElementById('pm-title').style.fontSize = "1.8rem"; 
+                    } else {
+                        document.getElementById('pm-title').innerText = `Missió ${currentCandidate.id}`;
+                        document.getElementById('pm-title').style.fontSize = "2.2rem";
+                    }
                     document.getElementById('pm-time').innerText = `Obertura: ${currentCandidate.horaInicio}`;
                 }
                 
