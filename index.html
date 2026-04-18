@@ -676,6 +676,13 @@
             // Sincronización silenciosa en vivo cada 60 segundos
             setInterval(backgroundSync, 60000);
         }
+        document.getElementById('user-profile-corner').onclick = async () => {
+            if(confirm("Vols tancar la sessió, borrar el teu progrés de fotos actuals i tornar a començar?")) {
+                await localforage.clear();
+                location.reload();
+            }
+        };
+
         window.onload = boot;
     </script>
 </body>
